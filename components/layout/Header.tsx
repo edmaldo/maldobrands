@@ -1,3 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+
 type HeaderProps = {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
@@ -17,16 +22,24 @@ export default function Header({
   selectedCategory,
   onCategoryChange,
 }: HeaderProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleCategoryChange = (category: string) => {
+    onCategoryChange(category);
+    setMenuOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
+      {/* Header */}
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 sm:py-6">
         {/* Logo */}
-        <h1 className="text-3xl font-bold tracking-[0.2em] text-black">
-          Maldo Brands
+        <h1 className="text-xl font-bold tracking-[0.18em] text-black sm:text-2xl md:text-3xl md:tracking-[0.2em]">
+          MALDO BRANDS
         </h1>
 
-        {/* Navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-6 md:flex lg:gap-8">
           {categories.map((category) => {
             const isActive = selectedCategory === category;
 
@@ -43,7 +56,47 @@ export default function Header({
             );
           })}
         </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          className="flex items-center justify-center p-1 text-black md:hidden"
+        >
+          {menuOpen ? (
+            <X size={25} strokeWidth={1.5} />
+          ) : (
+            <Menu size={25} strokeWidth={1.5} />
+          )}
+        </button>
       </div>
+
+      {/* Mobile Navigation */}
+      {menuOpen && (
+        <nav className="border-t border-neutral-200 bg-white px-5 py-6 md:hidden">
+          <div className="flex flex-col">
+            {categories.map((category) => {
+              const isActive = selectedCategory === category;
+
+              return (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={`border-b border-neutral-100 py-4 text-left text-sm uppercase tracking-[0.18em] transition last:border-b-0 ${
+                    isActive
+                      ? "text-black"
+                      : "text-neutral-500 hover:text-black"
+                  }`}
+                >
+                  {category}
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+      )}
     </header>
   );
 }
