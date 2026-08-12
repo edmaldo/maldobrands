@@ -9,13 +9,11 @@ type HeaderProps = {
 };
 
 const categories = [
-  "Women",
-  "Men",
-  "Streetwear",
-  "Minimal",
+  "Cool",
+  "Spring/Summer",
+  "Fall/Winter",
   "Luxury",
-  "Office",
-  "Summer",
+  "Business",
 ];
 
 export default function Header({
@@ -33,10 +31,11 @@ export default function Header({
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
       {/* Header */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 sm:py-6">
-        {/* Logo */}
-        <h1 className="text-xl font-bold tracking-[0.18em] text-black sm:text-2xl md:text-3xl md:tracking-[0.2em]">
-          MALDO BRANDS
-        </h1>
+        <div className="gzm-logo" aria-label="GZM">
+          <span className="gzm-g">G</span>
+          <span className="gzm-z">Z</span>
+          <span className="gzm-m">M</span>
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-6 md:flex lg:gap-8">

@@ -27,7 +27,7 @@ export default function Footer() {
         </nav>
 
         <p className="mt-5 text-[10px] text-neutral-400">
-          © {new Date().getFullYear()} Maldo Brands. All rights reserved.
+          © {new Date().getFullYear()} GZM Fashion. All rights reserved.
         </p>
       </div>
     </footer>

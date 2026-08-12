@@ -13,7 +13,7 @@ export const demoOutfits: Outfit[] = [
   {
     id: 2,
     title: "Summer Escape",
-    image: "https://picsum.photos/600/800?random=2",
+    image: "/images/outfits/outfit_81233.png",
   },
   {
     id: 3,

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Maldo Brands",
+  title: "GZM Fashion",
   description: "Fashion discovery and editorial inspiration.",
 };
 
