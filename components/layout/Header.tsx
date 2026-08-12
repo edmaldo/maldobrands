@@ -22,7 +22,7 @@ export default function Header({
       <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
         {/* Logo */}
         <h1 className="text-3xl font-bold tracking-[0.2em] text-black">
-          M.LOOKS
+          Maldo Brands
         </h1>
 
         {/* Navigation */}
