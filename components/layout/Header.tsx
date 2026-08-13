@@ -8,13 +8,7 @@ type HeaderProps = {
   onCategoryChange: (category: string) => void;
 };
 
-const categories = [
-  "Cool",
-  "Spring/Summer",
-  "Fall/Winter",
-  "Luxury",
-  "Business",
-];
+const categories = ["Spring/Summer", "Fall/Winter", "Luxury", "Business"];
 
 export default function Header({
   selectedCategory,
@@ -31,10 +25,20 @@ export default function Header({
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
       {/* Header */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 sm:py-6">
-        <div className="gzm-logo" aria-label="GZM">
-          <span className="gzm-g">G</span>
-          <span className="gzm-z">Z</span>
-          <span className="gzm-m">M</span>
+        {/* Brand */}
+        <div className="flex items-center gap-6">
+          {/* GZM Logo */}
+          <div className="gzm-logo" aria-label="GZM">
+            <span className="gzm-g">G</span>
+            <span className="gzm-z">Z</span>
+            <span className="gzm-m">M</span>
+          </div>
+          {/* Curated Looks */}
+          <div className="hidden sm:block">
+            <span className="text-[11px] font-light uppercase tracking-[0.45em] text-neutral-800">
+              Curated Looks
+            </span>
+          </div>
         </div>
 
         {/* Desktop Navigation */}
@@ -47,7 +51,9 @@ export default function Header({
                 key={category}
                 onClick={() => onCategoryChange(category)}
                 className={`text-sm uppercase tracking-[0.15em] transition ${
-                  isActive ? "text-black" : "text-neutral-500 hover:text-black"
+                  isActive
+                    ? "text-black underline underline-offset-8 decoration-[1px]"
+                    : "text-neutral-500 hover:text-black"
                 }`}
               >
                 {category}

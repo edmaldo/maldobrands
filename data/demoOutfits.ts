@@ -8,31 +8,16 @@ export const demoOutfits: Outfit[] = [
   {
     id: 1,
     title: "Weekend in SoHo",
-    image: "https://picsum.photos/600/800?random=1",
+    image: "/images/outfits/outfit_81224.png",
   },
   {
     id: 2,
     title: "Summer Escape",
-    image: "/images/outfits/outfit_81233.png",
+    image: "/images/outfits/outfit_81228.png",
   },
   {
     id: 3,
     title: "Minimal Office",
-    image: "https://picsum.photos/600/800?random=3",
-  },
-  {
-    id: 4,
-    title: "City Evening",
-    image: "https://picsum.photos/600/800?random=4",
-  },
-  {
-    id: 5,
-    title: "Vacation Look",
-    image: "https://picsum.photos/600/800?random=5",
-  },
-  {
-    id: 6,
-    title: "Clean Girl",
-    image: "https://picsum.photos/600/800?random=6",
+    image: "/images/outfits/outfit_81234.png",
   },
 ];

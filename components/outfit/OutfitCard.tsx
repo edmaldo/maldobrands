@@ -15,7 +15,7 @@ export default function OutfitCard({ outfit, onClick }: OutfitCardProps) {
         <img
           src={outfit.image}
           alt={outfit.title}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
         />
 
         <div className="absolute inset-0 bg-black/0 transition duration-500 group-hover:bg-black/30" />

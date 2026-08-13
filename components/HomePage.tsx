@@ -7,7 +7,7 @@ import OutfitGallery from "./outfit/OutfitGallery";
 import OutfitDetailModal from "./outfit/OutfitDetailModal";
 
 export default function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState("Women");
+  const [selectedCategory, setSelectedCategory] = useState("Explore GZM");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
