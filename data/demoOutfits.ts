@@ -13,7 +13,7 @@ export const demoOutfits: Outfit[] = [
   {
     id: 2,
     title: "Summer Escape",
-    image: "/images/outfits/outfit_81228.png",
+    image: "/images/outfits/outfit_81247.png",
   },
   {
     id: 3,
