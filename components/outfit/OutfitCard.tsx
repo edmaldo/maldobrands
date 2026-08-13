@@ -1,4 +1,4 @@
-import { Outfit } from "@/data/demoOutfits";
+import type { Outfit } from "./OutfitDetailModal";
 
 type OutfitCardProps = {
   outfit: Outfit;
@@ -18,8 +18,10 @@ export default function OutfitCard({ outfit, onClick }: OutfitCardProps) {
           className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
         />
 
+        {/* Hover overlay */}
         <div className="absolute inset-0 bg-black/0 transition duration-500 group-hover:bg-black/30" />
 
+        {/* Hover information */}
         <div className="absolute bottom-0 p-6 text-white opacity-0 transition duration-300 group-hover:opacity-100">
           <h3 className="text-xl font-semibold">{outfit.title}</h3>
 
