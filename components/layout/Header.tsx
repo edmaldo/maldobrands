@@ -3,12 +3,22 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
+type Category = {
+  label: string;
+  value: string;
+};
+
 type HeaderProps = {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
 };
 
-const categories = ["Spring/Summer", "Fall/Winter", "Luxury", "Business"];
+const categories: Category[] = [
+  { label: "Spring/Summer", value: "spring-summer" },
+  { label: "Fall/Winter", value: "fall-winter" },
+  { label: "Luxury", value: "luxury" },
+  { label: "Business", value: "business" },
+];
 
 export default function Header({
   selectedCategory,
@@ -23,17 +33,15 @@ export default function Header({
 
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
-      {/* Header */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 sm:py-6">
         {/* Brand */}
         <div className="flex items-center gap-6">
-          {/* GZM Logo */}
           <div className="gzm-logo" aria-label="GZM">
             <span className="gzm-g">G</span>
             <span className="gzm-z">Z</span>
             <span className="gzm-m">M</span>
           </div>
-          {/* Curated Looks */}
+
           <div className="hidden sm:block">
             <span className="text-[11px] font-light uppercase tracking-[0.45em] text-neutral-800">
               Curated Looks
@@ -44,25 +52,25 @@ export default function Header({
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-6 md:flex lg:gap-8">
           {categories.map((category) => {
-            const isActive = selectedCategory === category;
+            const isActive = selectedCategory === category.value;
 
             return (
               <button
-                key={category}
-                onClick={() => onCategoryChange(category)}
+                key={category.value}
+                onClick={() => onCategoryChange(category.value)}
                 className={`text-sm uppercase tracking-[0.15em] transition ${
                   isActive
                     ? "text-black underline underline-offset-8 decoration-[1px]"
                     : "text-neutral-500 hover:text-black"
                 }`}
               >
-                {category}
+                {category.label}
               </button>
             );
           })}
         </nav>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu */}
         <button
           type="button"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -83,19 +91,19 @@ export default function Header({
         <nav className="border-t border-neutral-200 bg-white px-5 py-6 md:hidden">
           <div className="flex flex-col">
             {categories.map((category) => {
-              const isActive = selectedCategory === category;
+              const isActive = selectedCategory === category.value;
 
               return (
                 <button
-                  key={category}
-                  onClick={() => handleCategoryChange(category)}
+                  key={category.value}
+                  onClick={() => handleCategoryChange(category.value)}
                   className={`border-b border-neutral-100 py-4 text-left text-sm uppercase tracking-[0.18em] transition last:border-b-0 ${
                     isActive
                       ? "text-black"
                       : "text-neutral-500 hover:text-black"
                   }`}
                 >
-                  {category}
+                  {category.label}
                 </button>
               );
             })}

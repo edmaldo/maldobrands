@@ -139,7 +139,6 @@ export default function HomePage() {
     selectedCategory === "Explore GZM"
       ? outfits
       : outfits.filter((outfit) => outfit.category === selectedCategory);
-
   return (
     <main className="min-h-screen bg-neutral-50">
       <Header
