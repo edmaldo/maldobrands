@@ -73,11 +73,17 @@ export default function HomePage() {
             ?.map((item) => {
               if (!item.products) return null;
 
+              const product = Array.isArray(item.products)
+                ? item.products[0]
+                : item.products;
+
+              if (!product) return null;
+
               return {
-                id: item.products.id,
-                name: item.products.name,
-                vendor: item.products.vendor,
-                productUrl: item.products.product_url,
+                id: product.id,
+                name: product.name,
+                vendor: product.vendor,
+                productUrl: product.product_url,
                 position: item.position,
               };
             })
