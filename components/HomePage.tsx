@@ -116,16 +116,10 @@ export default function HomePage() {
     loadOutfits();
   }, []);
 
-  /*
-   * User clicks an outfit card
-   */
   const handleSelectOutfit = (outfit: Outfit) => {
     setSelectedOutfit(outfit);
   };
 
-  /*
-   * User closes the modal
-   */
   const handleCloseModal = () => {
     setSelectedOutfit(null);
   };
