@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { X } from "lucide-react";
+import ShareButton from "./ShareButton";
 
 export type OutfitProduct = {
   id: string;
@@ -205,6 +206,11 @@ export default function OutfitDetailModal({
           >
             {outfit.description}
           </p>
+
+          {/* SHARE */}
+          <div className="mt-5">
+            <ShareButton outfitId={outfit.id} outfitTitle={outfit.title} />
+          </div>
 
           {/* =========================
               PRODUCTS

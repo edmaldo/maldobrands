@@ -116,12 +116,53 @@ export default function HomePage() {
     loadOutfits();
   }, []);
 
+  /*
+   * Open an outfit from a shared URL.
+   *
+   * Example:
+   * /?outfit=abc123
+   */
+  useEffect(() => {
+    if (outfits.length === 0) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const outfitId = params.get("outfit");
+
+    if (!outfitId) return;
+
+    const sharedOutfit = outfits.find((outfit) => outfit.id === outfitId);
+
+    if (!sharedOutfit) return;
+
+    setSelectedOutfit(sharedOutfit);
+  }, [outfits]);
+
+  /*
+   * Select an outfit from the gallery
+   * and reflect it in the URL.
+   */
   const handleSelectOutfit = (outfit: Outfit) => {
     setSelectedOutfit(outfit);
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("outfit", outfit.id);
+
+    window.history.replaceState({}, "", url.pathname + url.search);
   };
 
+  /*
+   * Close the modal and remove the
+   * outfit from the URL.
+   */
   const handleCloseModal = () => {
     setSelectedOutfit(null);
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.delete("outfit");
+
+    window.history.replaceState({}, "", url.pathname + url.search);
   };
 
   /*
