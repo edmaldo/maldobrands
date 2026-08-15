@@ -103,18 +103,6 @@ body {
   opacity: 0.35;
 }
 
-.serif-gray-header {
-  font-family: "Trajan Pro", "Times New Roman", serif;
-  font-weight: 200;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #707070;
-
-  display: inline-block;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #b5b5b5;
-}
-
 /* Sleek modal scrollbar */
 .modal-scrollbar {
   scrollbar-width: thin;

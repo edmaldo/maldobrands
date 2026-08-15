@@ -24,7 +24,7 @@ export default function ShareButton({
       try {
         await navigator.share({
           title: outfitTitle,
-          text: `Take a look at this GZM outfit: ${outfitTitle}`,
+          text: `Take a look at this GZM outfit:`,
           url: shareUrl,
         });
 

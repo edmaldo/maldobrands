@@ -24,12 +24,6 @@ export default function AboutPage() {
           <div className="mx-auto max-w-3xl px-6 py-10 md:py-14">
             <div className="space-y-12 text-[14px] leading-7 text-neutral-600">
               <div>
-                <p className="text-[15px] text-neutral-800">
-                  GZM is a fashion discovery and curation platform built around
-                  the idea that discovering what to wear should be as inspiring
-                  as discovering what to buy.
-                </p>
-
                 <p className="mt-5">
                   We curate complete looks from across contemporary fashion and
                   bring the individual pieces together in one place, making it
@@ -54,19 +48,6 @@ export default function AboutPage() {
                   GZM is not generally the seller of the products featured on
                   the platform. When you choose to shop a product, you may be
                   directed to the retailer that sells it.
-                </p>
-              </div>
-
-              <div>
-                <h2 className="mb-4 text-lg font-medium text-neutral-900">
-                  Curation
-                </h2>
-
-                <p>
-                  GZM is built around curation rather than simply presenting a
-                  catalog of products. Looks may be organized by season,
-                  aesthetic, category, or other points of view to help make
-                  contemporary fashion easier to explore.
                 </p>
               </div>
 

@@ -17,8 +17,9 @@ export async function generateMetadata({
   // Normal homepage
   if (!outfitId) {
     return {
-      title: "GZM",
-      description: "Contemporary fashion, curated.",
+      title: "GZM — Contemporary Fashion, Curated",
+      description:
+        "GZM is a curated contemporary fashion platform exploring the ideas, styles, and looks shaping what feels relevant now — with the reasoning behind why they work.",
     };
   }
 
@@ -39,8 +40,9 @@ export async function generateMetadata({
   // Invalid outfit ID
   if (!outfit) {
     return {
-      title: "GZM",
-      description: "Contemporary fashion, curated.",
+      title: "GZM — Contemporary Fashion, Curated",
+      description:
+        "GZM is a curated contemporary fashion platform exploring the ideas, styles, and looks shaping what feels relevant now — with the reasoning behind why they work.",
     };
   }
 

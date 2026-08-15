@@ -14,8 +14,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GZM Fashion",
-  description: "Fashion discovery and editorial inspiration.",
+  metadataBase: new URL("https://maldobrands.vercel.app"),
+
+  title: {
+    default: "GZM — Contemporary Fashion, Curated",
+    template: "%s — GZM",
+  },
+
+  description:
+    "GZM is a curated contemporary fashion platform exploring the ideas, styles, and looks shaping what feels relevant now.",
+
+  openGraph: {
+    siteName: "GZM",
+    type: "website",
+    images: [
+      {
+        url: "/images/logos/gzm%20image.png",
+        width: 1200,
+        height: 630,
+        alt: "GZM — Curated Looks",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

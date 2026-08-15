@@ -14,7 +14,9 @@ export default function OutfitGallery({
 }: OutfitGalleryProps) {
   return (
     <section className="mx-auto max-w-7xl px-8 py-12">
-      <h2 className="serif-gray-header mb-10 text-4xl">{category}</h2>
+      <h2 className="mb-8 ont-light uppercase tracking-[0.45em] text-neutral-700">
+        {category}
+      </h2>
 
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {outfits.map((outfit) => (
