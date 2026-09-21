@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import OutfitHeader from "@/components/layout/OutfitHeader";
 import OutfitGallery from "@/components/outfit/OutfitGallery";
@@ -17,9 +16,6 @@ export default function AllOutfitsPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const searchParams = useSearchParams();
-  const sharedOutfitId = searchParams.get("outfit");
 
   /*
    * Load all outfits from Supabase
@@ -113,6 +109,10 @@ export default function AllOutfitsPage() {
 
       setOutfits(formattedOutfits);
       setLoading(false);
+
+      const sharedOutfitId = new URLSearchParams(window.location.search).get(
+        "outfit",
+      );
 
       if (sharedOutfitId) {
         const sharedOutfit = formattedOutfits.find(
