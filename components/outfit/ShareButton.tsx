@@ -15,7 +15,7 @@ export default function ShareButton({
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
-    const shareUrl = `${window.location.origin}/?outfit=${encodeURIComponent(
+    const shareUrl = `${window.location.origin}/outfits?outfit=${encodeURIComponent(
       outfitId,
     )}`;
 
