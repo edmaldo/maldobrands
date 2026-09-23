@@ -17,12 +17,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://maldobrands.vercel.app"),
 
   title: {
-    default: "GZM — Contemporary Fashion, Curated",
+    default: "GZM- Stories Worth Wearing",
     template: "%s — GZM",
   },
 
   description:
-    "GZM is a curated contemporary fashion platform exploring the ideas, styles, and looks shaping what feels relevant now.",
+    "GZM is a curated contemporary fashion platform exploring relevant styles through fun animated stories.",
 
   openGraph: {
     siteName: "GZM",

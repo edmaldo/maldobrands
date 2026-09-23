@@ -45,10 +45,8 @@ export default function Footer() {
         </nav>
 
         <p className="mt-4 max-w-xl text-center text-[10px] leading-relaxed text-neutral-400">
-          GZM is a fashion discovery platform featuring curated looks and
-          products from third-party brands and retailers. Products are sold
-          directly by the respective vendors. Some links may be affiliate links,
-          through which GZM may earn a commission at no additional cost to you.
+          GZM may earn a commission from qualifying purchases made through
+          select links.
         </p>
 
         <p className="mt-4 text-[10px] text-neutral-400">

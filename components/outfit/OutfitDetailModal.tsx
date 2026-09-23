@@ -168,28 +168,26 @@ export default function OutfitDetailModal({
             w-full
             shrink-0
             px-6
-            py-8
-
+            py-5
             sm:px-8
-
             md:h-full
             md:overflow-y-auto
             md:px-10
-            md:py-10
+            md:py-6
           "
         >
           {/* TITLE */}
           <h2
             className="
               text-3xl
-              font-thin
+              font-medium
               leading-tight
-              text-neutral-500
-
-              sm:text-4xl
-
-              md:text-3xl
+              tracking-[-0.02em]
+              text-neutral-700
             "
+            style={{
+              fontFamily: '"Times New Roman", "Bodoni 72", Didot, serif',
+            }}
           >
             {outfit.title}
           </h2>
@@ -197,25 +195,28 @@ export default function OutfitDetailModal({
           {/* DESCRIPTION */}
           <p
             className="
-              mt-5
+              mt-6
               max-w-md
-              text-base
-              leading-7
+              text-[15px]
+              leading-6
               text-neutral-600
             "
           >
             {outfit.description}
           </p>
 
-          {/* SHARE */}
-          <div className="mt-5">
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
             <ShareButton outfitId={outfit.id} outfitTitle={outfit.title} />
+
+            <p className="text-[10px] leading-4 text-neutral-400">
+              GZM may earn a commission from qualifying purchases.
+            </p>
           </div>
 
           {/* =========================
               PRODUCTS
           ========================== */}
-          <div className="mt-8 sm:mt-10">
+          <div className="mt-6 sm:mt-6">
             {sortedItems.map((item) => (
               <div
                 key={item.id}

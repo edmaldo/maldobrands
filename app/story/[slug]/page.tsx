@@ -1,13 +1,21 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
-import StoryReader from "@/components/story/StoryReader";
+import StoryReader, {
+  type StoryReaderPart,
+  type StoryReaderOutfit,
+  type StoryReaderProduct,
+  type StoryReaderStory,
+} from "@/components/story/StoryReader";
 
 type Genre = {
   id: string;
   name: string;
   slug: string;
+};
+
+type StoryGenre = {
+  genres: Genre | Genre[] | null;
 };
 
 type Product = {
@@ -23,28 +31,28 @@ type OutfitItem = {
   products: Product | Product[] | null;
 };
 
-type Outfit = {
+type SupabaseOutfit = {
   id: string;
   title: string;
-  description: string | null;
   image_path: string | null;
   outfit_items: OutfitItem[];
 };
 
-type StoryGenre = {
-  genres: Genre | Genre[] | null;
+type StoryPartOutfit = {
+  outfit: SupabaseOutfit | SupabaseOutfit[] | null;
 };
 
-type StoryScene = {
+type SupabaseStoryPart = {
   id: string;
-  scene_number: number;
-  image: string | null;
+  story_id: string;
+  part_number: number;
   caption: string | null;
-  dialogue: string | null;
-  outfit_id: string | null;
+  cover_image: string | null;
+  video_url: string | null;
+  story_part_outfits: StoryPartOutfit[];
 };
 
-type Story = {
+type SupabaseStory = {
   id: string;
   title: string;
   slug: string;
@@ -52,7 +60,7 @@ type Story = {
   cover_image: string | null;
   status: string;
   story_genres: StoryGenre[];
-  story_scenes: StoryScene[];
+  story_parts: SupabaseStoryPart[];
 };
 
 type PageProps = {
@@ -66,6 +74,26 @@ export default async function StoryPage({ params }: PageProps) {
 
   const supabase = await createClient();
 
+  /*
+   * =========================================================
+   * LOAD STORY
+   * =========================================================
+   *
+   * Story structure:
+   *
+   * stories
+   *   ↓
+   * story_parts
+   *   ↓
+   * story_part_outfits
+   *   ↓
+   * outfits
+   *   ↓
+   * outfit_items
+   *   ↓
+   * products
+   */
+
   const { data: storyData, error: storyError } = await supabase
     .from("stories")
     .select(
@@ -76,6 +104,7 @@ export default async function StoryPage({ params }: PageProps) {
         description,
         cover_image,
         status,
+
         story_genres (
           genres (
             id,
@@ -83,13 +112,34 @@ export default async function StoryPage({ params }: PageProps) {
             slug
           )
         ),
-        story_scenes (
+
+        story_parts (
           id,
-          scene_number,
-          image,
+          story_id,
+          part_number,
           caption,
-          dialogue,
-          outfit_id
+          cover_image,
+          video_url,
+
+          story_part_outfits (
+            outfit:outfits (
+              id,
+              title,
+              image_path,
+
+              outfit_items (
+                id,
+                position,
+
+                products (
+                  id,
+                  name,
+                  vendor,
+                  product_url
+                )
+              )
+            )
+          )
         )
       `,
     )
@@ -98,194 +148,152 @@ export default async function StoryPage({ params }: PageProps) {
     .single();
 
   if (storyError || !storyData) {
+    console.error("Error loading story:", storyError);
     notFound();
   }
 
-  const story = storyData as Story;
+  const story = storyData as SupabaseStory;
 
   /*
-   * Sort scenes.
+   * =========================================================
+   * SORT PARTS
+   * =========================================================
    */
-  const rawScenes = [...(story.story_scenes ?? [])].sort(
-    (a, b) => a.scene_number - b.scene_number,
+
+  const sortedParts = [...(story.story_parts ?? [])].sort(
+    (a, b) => a.part_number - b.part_number,
   );
 
   /*
-   * Resolve story images on the server.
+   * =========================================================
+   * FORMAT STORY PARTS
+   * =========================================================
    */
-  const scenes = rawScenes.map((scene) => {
-    let imageUrl: string | null = null;
 
-    if (scene.image) {
+  const parts: StoryReaderPart[] = sortedParts.map((part) => {
+    /*
+     * Resolve the 9:16 story-part image.
+     */
+    let coverImage: string | null = null;
+
+    if (part.cover_image) {
       if (
-        scene.image.startsWith("http://") ||
-        scene.image.startsWith("https://")
+        part.cover_image.startsWith("http://") ||
+        part.cover_image.startsWith("https://")
       ) {
-        imageUrl = scene.image;
+        coverImage = part.cover_image;
       } else {
-        imageUrl = supabase.storage
-          .from("story-images")
-          .getPublicUrl(scene.image).data.publicUrl;
+        coverImage = supabase.storage
+          .from("story-parts")
+          .getPublicUrl(part.cover_image).data.publicUrl;
       }
     }
 
+    /*
+     * Resolve outfits associated with this part.
+     */
+    const outfits: StoryReaderOutfit[] =
+      part.story_part_outfits
+        ?.map((relationship) => {
+          const rawOutfit = relationship.outfit;
+
+          if (!rawOutfit) return null;
+
+          const outfit = Array.isArray(rawOutfit) ? rawOutfit[0] : rawOutfit;
+
+          if (!outfit) return null;
+
+          /*
+           * Resolve outfit image.
+           */
+          let outfitImage = "";
+
+          if (outfit.image_path) {
+            if (
+              outfit.image_path.startsWith("http://") ||
+              outfit.image_path.startsWith("https://")
+            ) {
+              outfitImage = outfit.image_path;
+            } else {
+              outfitImage = supabase.storage
+                .from("outfit-images")
+                .getPublicUrl(outfit.image_path).data.publicUrl;
+            }
+          }
+
+          /*
+           * Convert outfit products into the
+           * shape expected by StoryReader.
+           */
+          const items: StoryReaderProduct[] = (outfit.outfit_items ?? [])
+            .map((item) => {
+              if (!item.products) return null;
+
+              const product = Array.isArray(item.products)
+                ? item.products[0]
+                : item.products;
+
+              if (!product) return null;
+
+              return {
+                id: product.id,
+                name: product.name,
+                vendor: product.vendor,
+                productUrl: product.product_url,
+                position: item.position,
+              };
+            })
+            .filter((item): item is StoryReaderProduct => item !== null)
+            .sort((a, b) => a.position - b.position);
+
+          return {
+            id: outfit.id,
+            title: outfit.title,
+            image: outfitImage,
+            items,
+          };
+        })
+        .filter((outfit): outfit is StoryReaderOutfit => outfit !== null) ?? [];
+
     return {
-      ...scene,
-      image: imageUrl,
+      id: part.id,
+      story_id: part.story_id,
+      part_number: part.part_number,
+      caption: part.caption,
+      cover_image: coverImage,
+      video_url: part.video_url,
+      outfits,
     };
   });
 
   /*
-   * Find all outfits used by the story.
+   * =========================================================
+   * STORY DATA FOR READER
+   * =========================================================
    */
-  const outfitIds = [
-    ...new Set(
-      scenes
-        .map((scene) => scene.outfit_id)
-        .filter((id): id is string => Boolean(id)),
-    ),
-  ];
 
-  let outfits: Outfit[] = [];
-
-  if (outfitIds.length > 0) {
-    const { data: outfitData } = await supabase
-      .from("outfits")
-      .select(
-        `
-        id,
-        title,
-        description,
-        image_path,
-        outfit_items (
-          id,
-          position,
-          products (
-            id,
-            name,
-            vendor,
-            product_url
-          )
-        )
-      `,
-      )
-      .in("id", outfitIds);
-
-    outfits = (outfitData ?? []) as Outfit[];
-  }
+  const readerStory: StoryReaderStory = {
+    id: story.id,
+    title: story.title,
+    description: story.description,
+    slug: story.slug,
+  };
 
   /*
-   * Flatten genres.
+   * =========================================================
+   * RENDER
+   * =========================================================
+   *
+   * StoryReader owns the entire reader experience:
+   *
+   * - story title
+   * - part navigation
+   * - horizontal swipe/scroll
+   * - 9:16 media
+   * - captions
+   * - outfits
+   * - product links
    */
-  const genres =
-    story.story_genres?.flatMap((storyGenre) => {
-      if (!storyGenre.genres) return [];
 
-      return Array.isArray(storyGenre.genres)
-        ? storyGenre.genres
-        : [storyGenre.genres];
-    }) ?? [];
-
-  return (
-    <main className="min-h-screen bg-white text-neutral-900">
-      {/* ==========================================
-          GZM HEADER
-          ========================================== */}
-      <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 sm:px-8">
-          {/* GZM Monogram */}
-          <Link
-            href="/"
-            aria-label="GZM Fashion home"
-            className="gzm-logo relative block h-[58px] w-[90px] shrink-0"
-          >
-            <span className="gzm-g">G</span>
-            <span className="gzm-z">Z</span>
-            <span className="gzm-m">M</span>
-          </Link>
-
-          {/* Story genres */}
-          <div className="hidden items-center gap-3 sm:flex">
-            {genres.map((genre, index) => (
-              <div key={genre.id} className="flex items-center gap-3">
-                {index > 0 && <span className="text-neutral-300">/</span>}
-
-                <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-                  {genre.name}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Back */}
-          <Link
-            href="/"
-            className="text-[9px] uppercase tracking-[0.2em] text-neutral-500 transition hover:text-neutral-900"
-          >
-            All Stories
-          </Link>
-        </div>
-      </header>
-
-      {/* ==========================================
-          COMPACT STORY INTRO
-          ========================================== */}
-      <section className="border-b border-neutral-200 px-6 py-10 sm:py-12">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              {genres.length > 0 && (
-                <div className="mb-2 flex items-center gap-3">
-                  {genres.map((genre, index) => (
-                    <div key={genre.id} className="flex items-center gap-3">
-                      {index > 0 && <span className="text-neutral-300">/</span>}
-
-                      <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-400">
-                        {genre.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <h1 className="text-3xl font-light tracking-tight text-neutral-900 sm:text-4xl">
-                {story.title}
-              </h1>
-            </div>
-
-            {story.description && (
-              <p className="max-w-md text-sm font-light leading-6 text-neutral-500 sm:text-right">
-                {story.description}
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ==========================================
-          STORY READER
-          ========================================== */}
-      <StoryReader title={story.title} scenes={scenes} outfits={outfits} />
-
-      {/* ==========================================
-          END
-          ========================================== */}
-      <section className="border-t border-neutral-200 px-6 py-24 text-center">
-        <p className="text-[9px] uppercase tracking-[0.3em] text-neutral-400">
-          The End
-        </p>
-
-        <h2 className="mt-4 text-2xl font-light text-neutral-900 sm:text-3xl">
-          More stories await.
-        </h2>
-
-        <Link
-          href="/"
-          className="mt-7 inline-block border border-neutral-300 px-6 py-3 text-[9px] uppercase tracking-[0.25em] text-neutral-600 transition hover:border-neutral-900 hover:text-neutral-900"
-        >
-          Explore GZM
-        </Link>
-      </section>
-    </main>
-  );
+  return <StoryReader story={readerStory} parts={parts} />;
 }

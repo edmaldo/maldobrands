@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import OutfitHeader from "@/components/layout/OutfitHeader";
+import Header from "@/components/layout/Header";
 import OutfitGallery from "@/components/outfit/OutfitGallery";
 import OutfitDetailModal, {
   type Outfit,
@@ -13,6 +13,7 @@ import { createClient } from "@/lib/supabase/client";
 export default function AllOutfitsPage() {
   const [outfits, setOutfits] = useState<Outfit[]>([]);
   const [selectedOutfit, setSelectedOutfit] = useState<Outfit | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -142,9 +143,21 @@ export default function AllOutfitsPage() {
     setSelectedOutfit(null);
   };
 
+  const categories = [
+    "All",
+    ...Array.from(
+      new Set(outfits.map((outfit) => outfit.category).filter(Boolean)),
+    ),
+  ];
+
+  const filteredOutfits =
+    selectedCategory === "All"
+      ? outfits
+      : outfits.filter((outfit) => outfit.category === selectedCategory);
+
   return (
     <>
-      <OutfitHeader />
+      <Header />
 
       <main className="min-h-screen bg-neutral-50">
         {/* Page Header */}
@@ -163,12 +176,22 @@ export default function AllOutfitsPage() {
               </p>
             </div>
 
-            {/* Header Advertisement */}
-            <div className="hidden min-h-[70px] flex-1 items-center justify-center border border-neutral-200 bg-white lg:flex">
-              <span className="text-[9px] uppercase tracking-[0.3em] text-neutral-400">
-                Advertisement
-              </span>
-            </div>
+            {/* Categories */}
+            <nav className="flex items-center gap-6">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`text-[11px] uppercase tracking-[0.18em] transition-colors ${
+                    selectedCategory === category
+                      ? "text-neutral-900"
+                      : "text-neutral-400 hover:text-neutral-700"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </nav>
           </div>
         </section>
 
@@ -194,7 +217,7 @@ export default function AllOutfitsPage() {
         {!loading && !error && (
           <OutfitGallery
             category=""
-            outfits={outfits}
+            outfits={filteredOutfits}
             onSelectOutfit={handleSelectOutfit}
           />
         )}

@@ -18,6 +18,9 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+  .font-editorial {
+    font-family: "Times New Roman", "Bodoni 72", Didot, serif;
+  }
 }
 
 body {

@@ -16,10 +16,6 @@ export default function LegalHeader() {
             <span className="gzm-z">Z</span>
             <span className="gzm-m">M</span>
           </Link>
-
-          <span className="hidden sm:block text-[11px] font-light uppercase tracking-[0.45em] text-neutral-800">
-            Curated Looks
-          </span>
         </div>
       </div>
     </header>
