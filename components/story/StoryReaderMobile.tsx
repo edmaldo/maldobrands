@@ -47,7 +47,7 @@ export default function StoryReaderMobile({
   story,
   parts,
 }: StoryReaderMobileProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const sortedParts = [...parts].sort((a, b) => a.part_number - b.part_number);
 
@@ -77,28 +77,9 @@ export default function StoryReaderMobile({
   }, [activeIndex]);
 
   const goToPart = (index: number) => {
-    const container = scrollRef.current;
-
-    if (!container) return;
-
     const safeIndex = Math.min(Math.max(index, 0), sortedParts.length - 1);
 
-    container.scrollTo({
-      left: safeIndex * container.clientWidth,
-      behavior: "smooth",
-    });
-
     setActiveIndex(safeIndex);
-  };
-
-  const handleScroll = () => {
-    const container = scrollRef.current;
-
-    if (!container) return;
-
-    const index = Math.round(container.scrollLeft / container.clientWidth);
-
-    setActiveIndex(Math.min(Math.max(index, 0), sortedParts.length - 1));
   };
 
   if (sortedParts.length === 0) {
@@ -165,14 +146,37 @@ export default function StoryReaderMobile({
 
       {/* Story media */}
       <div
-        ref={scrollRef}
-        onScroll={handleScroll}
-        className="flex h-full w-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain scrollbar-none"
+        className="relative h-full w-full overflow-hidden"
+        onTouchStart={(event) => {
+          touchStartX.current = event.touches[0].clientX;
+        }}
+        onTouchEnd={(event) => {
+          if (touchStartX.current === null) return;
+
+          const touchEndX = event.changedTouches[0].clientX;
+          const distance = touchStartX.current - touchEndX;
+
+          touchStartX.current = null;
+
+          if (Math.abs(distance) < 50) return;
+
+          if (distance > 0) {
+            goToPart(activeIndex + 1);
+          } else {
+            goToPart(activeIndex - 1);
+          }
+        }}
       >
-        {sortedParts.map((part) => (
+        {sortedParts.map((part, index) => (
           <section
             key={part.id}
-            className="relative h-full min-w-full shrink-0 snap-center bg-neutral-950"
+            className={`absolute inset-0 bg-neutral-950 transition-transform duration-300 ease-out ${
+              index === activeIndex
+                ? "translate-x-0"
+                : index < activeIndex
+                  ? "-translate-x-full"
+                  : "translate-x-full"
+            }`}
           >
             {part.video_url ? (
               <video
