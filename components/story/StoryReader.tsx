@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, X, ExternalLink } from "lucide-react";
 
@@ -50,7 +51,17 @@ export default function StoryReader({ story, parts }: StoryReaderProps) {
 
   const sortedParts = [...parts].sort((a, b) => a.part_number - b.part_number);
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const searchParams = useSearchParams();
+  const requestedPart = Number(searchParams.get("part"));
+
+  const initialIndex =
+    Number.isInteger(requestedPart) &&
+    requestedPart >= 1 &&
+    requestedPart <= sortedParts.length
+      ? requestedPart - 1
+      : 0;
+
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
 
   /*
    * Prevent the page behind the reader from
@@ -65,6 +76,19 @@ export default function StoryReader({ story, parts }: StoryReaderProps) {
       document.body.style.overflow = originalOverflow;
     };
   }, []);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+
+    if (!container || initialIndex === 0) return;
+
+    container.scrollTo({
+      left: initialIndex * container.clientWidth,
+      behavior: "instant",
+    });
+
+    setActiveIndex(initialIndex);
+  }, [initialIndex]);
 
   /*
    * Update the active part when the user
@@ -193,12 +217,12 @@ export default function StoryReader({ story, parts }: StoryReaderProps) {
           READER
       ====================================================== */}
 
-          <div className="grid min-h-0 flex-1 grid-cols-[220px_minmax(0,1fr)_360px]">
+          <div className="grid min-h-0 flex-1 grid-cols-[250px_minmax(0,1fr)_360px]">
             {/* ===================================================
             LEFT — PART NAVIGATION
         ==================================================== */}
 
-            <aside className="hidden min-h-0 overflow-y-auto border-r border-neutral-200 px-5 py-5 lg:block">
+            <aside className="hidden min-h-0 w-[250px] shrink-0 overflow-y-auto border-r border-neutral-200 px-5 py-5 lg:block story-scrollbar">
               <div className="mb-8">
                 <h2
                   className="mt-3 text-2xl leading-tight text-neutral-800"
@@ -342,7 +366,7 @@ export default function StoryReader({ story, parts }: StoryReaderProps) {
             RIGHT — STORY + SHOPPING
         ==================================================== */}
 
-            <aside className="hidden min-h-0 overflow-y-auto border-l border-neutral-200 bg-[#faf9f6] px-7 py-8 xl:block">
+            <aside className="story-scrollbar hidden min-h-0 overflow-y-auto border-l border-neutral-200 bg-[#faf9f6] px-7 py-8 xl:block">
               <div>
                 <p className="text-[9px] uppercase tracking-[0.3em] text-neutral-400">
                   Part {activePart.part_number}
@@ -402,24 +426,22 @@ export default function StoryReader({ story, parts }: StoryReaderProps) {
                             {outfit.items
                               .sort((a, b) => a.position - b.position)
                               .map((item) => (
-                                <div
+                                <a
                                   key={item.id}
-                                  className="flex items-center justify-between gap-3 border-b border-neutral-200 py-3"
+                                  href={item.productUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center justify-between gap-3 border-b border-neutral-200 py-3 transition-colors hover:bg-neutral-50"
                                 >
                                   <span className="min-w-0 text-xs leading-4 text-neutral-600">
                                     {item.name}
                                   </span>
 
-                                  <a
-                                    href={item.productUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex shrink-0 items-center gap-1 text-[10px] uppercase tracking-[0.12em] text-neutral-500 transition hover:text-neutral-900"
-                                  >
+                                  <span className="flex shrink-0 items-center gap-1 text-[10px] uppercase tracking-[0.12em] text-neutral-500">
                                     Shop
                                     <ExternalLink size={11} strokeWidth={1.3} />
-                                  </a>
-                                </div>
+                                  </span>
+                                </a>
                               ))}
                           </div>
                         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 
@@ -51,8 +52,22 @@ export default function StoryReaderMobile({
 
   const sortedParts = [...parts].sort((a, b) => a.part_number - b.part_number);
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const searchParams = useSearchParams();
+  const requestedPart = Number(searchParams.get("part"));
+
+  const initialIndex =
+    Number.isInteger(requestedPart) &&
+    requestedPart >= 1 &&
+    requestedPart <= sortedParts.length
+      ? requestedPart - 1
+      : 0;
+
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [shopOpen, setShopOpen] = useState(false);
+
+  useEffect(() => {
+    setActiveIndex(initialIndex);
+  }, [initialIndex]);
 
   const activePart = sortedParts[activeIndex];
 

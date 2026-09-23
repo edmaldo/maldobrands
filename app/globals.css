@@ -21,6 +21,28 @@
   .font-editorial {
     font-family: "Times New Roman", "Bodoni 72", Didot, serif;
   }
+
+  .story-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #b8b8b8 transparent;
+  }
+
+  .story-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .story-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .story-scrollbar::-webkit-scrollbar-thumb {
+    background: #b8b8b8;
+    border-radius: 9999px;
+  }
+
+  .story-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #888;
+  }
 }
 
 body {

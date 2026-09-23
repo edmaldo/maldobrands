@@ -238,14 +238,16 @@ export default function HomePage() {
 
       <section className="border-b border-neutral-200 bg-[#faf9f6] px-6 py-16 sm:px-10 sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-14 flex items-center justify-center gap-5">
-            <span className="h-px w-16 bg-neutral-300" />
+          <div className="mb-14 flex items-center justify-center">
+            <div className="flex w-full max-w-[700px] items-center justify-center gap-5">
+              <span className="h-px w-16 shrink-0 bg-neutral-300" />
 
-            <h2 className="font-editorial text-sm uppercase tracking-[0.45em] text-neutral-800">
-              How GZM Works
-            </h2>
+              <h2 className="font-editorial whitespace-nowrap text-center text-sm uppercase tracking-[0.35em] text-neutral-800">
+                How GZM Works
+              </h2>
 
-            <span className="h-px w-16 bg-neutral-300" />
+              <span className="h-px w-16 shrink-0 bg-neutral-300" />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3">
