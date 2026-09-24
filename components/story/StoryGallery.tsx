@@ -14,7 +14,7 @@ export default function StoryGallery({ storySlug, parts }: StoryGalleryProps) {
 
   return (
     <section className="w-full">
-      <div className="flex gap-5 overflow-x-auto px-5 pb-6 sm:px-8">
+      <div className="story-scrollbar flex gap-5 overflow-x-auto px-5 pb-7 sm:px-8">
         {sortedParts.map((part) => (
           <StoryCard key={part.id} part={part} storySlug={storySlug} />
         ))}

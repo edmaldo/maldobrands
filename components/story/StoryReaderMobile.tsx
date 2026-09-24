@@ -3,7 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  X,
+  SquareArrowOutUpLeft,
+} from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 
@@ -58,6 +64,8 @@ export default function StoryReaderMobile({
   parts,
 }: StoryReaderMobileProps) {
   const touchStartX = useRef<number | null>(null);
+  const shopTouchStartY = useRef<number | null>(null);
+  const shopSheetRef = useRef<HTMLElement | null>(null);
 
   const sortedParts = [...parts].sort((a, b) => a.part_number - b.part_number);
 
@@ -134,7 +142,7 @@ export default function StoryReaderMobile({
           aria-label="Back to stories"
           className="pointer-events-auto rounded-full p-2 text-white/90 backdrop-blur-sm transition hover:bg-white/10"
         >
-          <ChevronLeft size={21} strokeWidth={1.4} />
+          <SquareArrowOutUpLeft size={21} strokeWidth={1.4} />
         </Link>
 
         <div className="flex text-center text-white">
@@ -239,22 +247,13 @@ export default function StoryReaderMobile({
             </div>
 
             {/* Caption */}
-            {(part.caption || story.title) && (
-              <div className="absolute inset-x-5 bottom-[118px]">
-                <p
-                  className="text-[28px] leading-[1.05] text-white"
-                  style={{
-                    fontFamily: '"Times New Roman", "Bodoni 72", Didot, serif',
-                  }}
-                >
-                  {story.title}
-                </p>
-
-                {part.caption && (
-                  <p className="mt-3 max-w-[340px] text-[14px] leading-5 text-white/90">
+            {part.caption && (
+              <div className="absolute inset-x-3 bottom-[78px] flex justify-center">
+                <div className="w-full max-w-[520px] rounded-2xl bg-black/45 px-7 py-4 text-center backdrop-blur-[3px]">
+                  <p className="mx-auto max-w-[460px] text-[14px] leading-5 text-white/95">
                     {part.caption}
                   </p>
-                )}
+                </div>
               </div>
             )}
 
@@ -307,14 +306,7 @@ export default function StoryReaderMobile({
           className="mx-auto flex items-center gap-2 rounded-full border border-white/35 bg-black/25 px-5 py-3 text-[10px] uppercase tracking-[0.22em] text-white backdrop-blur-md transition hover:bg-black/40"
         >
           Shop the Looks
-          <span className="text-white/60">↑</span>
         </button>
-
-        <div className="mt-4 text-center">
-          <span className="text-[9px] uppercase tracking-[0.2em] text-white/55">
-            Swipe to explore
-          </span>
-        </div>
       </div>
 
       {/* Shop sheet backdrop */}
@@ -329,6 +321,28 @@ export default function StoryReaderMobile({
 
       {/* Shop sheet */}
       <aside
+        ref={shopSheetRef}
+        onTouchStart={(event) => {
+          shopTouchStartY.current = event.touches[0].clientY;
+        }}
+        onTouchEnd={(event) => {
+          if (shopTouchStartY.current === null) return;
+
+          const touchEndY = event.changedTouches[0].clientY;
+          const distance = touchEndY - shopTouchStartY.current;
+
+          shopTouchStartY.current = null;
+
+          // Only close on a meaningful downward swipe.
+          if (distance < 70) return;
+
+          // If the sheet is scrolled down, let the normal scroll behavior handle it.
+          if (shopSheetRef.current && shopSheetRef.current.scrollTop > 0) {
+            return;
+          }
+
+          setShopOpen(false);
+        }}
         className={`absolute inset-x-0 bottom-0 z-50 max-h-[78vh] overflow-y-auto rounded-t-[24px] bg-[#faf9f6] text-neutral-900 shadow-2xl transition-transform duration-300 ${
           shopOpen ? "translate-y-0" : "translate-y-full"
         }`}

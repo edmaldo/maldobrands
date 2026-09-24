@@ -24,11 +24,13 @@
 
   .story-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #b8b8b8 transparent;
+    scrollbar-color: rgba(60, 60, 60, 0.32) transparent;
   }
 
+  /* Chrome / Edge / Safari */
   .story-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    height: 4px;
+    width: 4px;
   }
 
   .story-scrollbar::-webkit-scrollbar-track {
@@ -36,12 +38,15 @@
   }
 
   .story-scrollbar::-webkit-scrollbar-thumb {
-    background: #b8b8b8;
+    background: rgba(60, 60, 60, 0.28);
     border-radius: 9999px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
   }
 
   .story-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #888;
+    background: rgba(60, 60, 60, 0.48);
+    background-clip: padding-box;
   }
 }
 
