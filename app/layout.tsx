@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://maldobrands.vercel.app"),
 
   title: {
-    default: "GZM- Stories Worth Wearing",
+    default: "GZM — Stories Worth Wearing",
     template: "%s — GZM",
   },
 

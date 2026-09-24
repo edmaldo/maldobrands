@@ -6,6 +6,7 @@ import Header from "@/components/layout/Header";
 import StoryGallery from "@/components/story/StoryGallery";
 import type { StoryCardPart } from "@/components/story/StoryCard";
 import { createClient } from "@/lib/supabase/client";
+import StoryShareButton from "@/components/story/StoryShareButton";
 
 type Genre = {
   id: string;
@@ -226,31 +227,40 @@ export default function StoriesPage() {
                 <section key={story.id}>
                   {/* Story Header */}
                   <div className="mx-5 mb-6 sm:mx-8">
-                    <div className="flex items-baseline gap-4">
-                      <h2 className="text-2xl font-light tracking-tight text-neutral-900 sm:text-3xl">
-                        {story.title}
-                      </h2>
+                    <div className="flex items-baseline justify-between gap-4">
+                      <div className="flex min-w-0 items-baseline gap-4">
+                        <h2 className="font-editorial text-2xl font-light tracking-tight text-neutral-900 sm:text-3xl">
+                          {story.title}
+                        </h2>
 
-                      {story.story_genres?.length > 0 && (
-                        <div className="flex flex-wrap gap-x-3 gap-y-1">
-                          {story.story_genres.map((storyGenre) => {
-                            if (!storyGenre.genres) return null;
+                        {story.story_genres?.length > 0 && (
+                          <div className="flex flex-wrap gap-x-3 gap-y-1">
+                            {story.story_genres.map((storyGenre) => {
+                              if (!storyGenre.genres) return null;
 
-                            const storyGenres = Array.isArray(storyGenre.genres)
-                              ? storyGenre.genres
-                              : [storyGenre.genres];
+                              const storyGenres = Array.isArray(
+                                storyGenre.genres,
+                              )
+                                ? storyGenre.genres
+                                : [storyGenre.genres];
 
-                            return storyGenres.map((genre) => (
-                              <span
-                                key={genre.id}
-                                className="text-[10px] uppercase tracking-[0.2em] text-neutral-400"
-                              >
-                                {genre.name}
-                              </span>
-                            ));
-                          })}
-                        </div>
-                      )}
+                              return storyGenres.map((genre) => (
+                                <span
+                                  key={genre.id}
+                                  className="text-[10px] uppercase tracking-[0.2em] text-neutral-400"
+                                >
+                                  {genre.name}
+                                </span>
+                              ));
+                            })}
+                          </div>
+                        )}
+                      </div>
+
+                      <StoryShareButton
+                        storySlug={story.slug}
+                        storyTitle={story.title}
+                      />
                     </div>
 
                     {story.description && (

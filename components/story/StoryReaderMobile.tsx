@@ -3,13 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ExternalLink,
-  X,
-  SquareArrowOutUpLeft,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 
@@ -137,14 +131,6 @@ export default function StoryReaderMobile({
     <main className="relative h-screen overflow-hidden bg-black text-white">
       {/* Header */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-30 flex h-[68px] items-center justify-between px-5">
-        <Link
-          href="/stories"
-          aria-label="Back to stories"
-          className="pointer-events-auto rounded-full p-2 text-white/90 backdrop-blur-sm transition hover:bg-white/10"
-        >
-          <SquareArrowOutUpLeft size={21} strokeWidth={1.4} />
-        </Link>
-
         <div className="flex text-center text-white">
           <span className="gzm-g">G</span>
           <span className="gzm-z">Z</span>

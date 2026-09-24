@@ -14,50 +14,40 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { outfit: outfitId } = await searchParams;
 
-  // Normal homepage
+  // Normal homepage:
+  // use the metadata defined in layout.tsx.
   if (!outfitId) {
-    return {
-      title: "GZM — Contemporary Fashion, Curated",
-      description:
-        "GZM is a curated contemporary fashion platform exploring the ideas, styles, and looks shaping what feels relevant now — with the reasoning behind why they work.",
-    };
+    return {};
   }
 
   const supabase = await createClient();
 
   const { data: outfit } = await supabase
     .from("outfits")
-    .select(
-      `
-      title,
-      description,
-      image_path
-      `,
-    )
+    .select("title, description, image_path")
     .eq("id", outfitId)
     .single();
 
-  // Invalid outfit ID
+  // Invalid outfit ID:
+  // fall back to the metadata defined in layout.tsx.
   if (!outfit) {
-    return {
-      title: "GZM — Contemporary Fashion, Curated",
-      description:
-        "GZM is a curated contemporary fashion platform exploring the ideas, styles, and looks shaping what feels relevant now — with the reasoning behind why they work.",
-    };
+    return {};
   }
 
   const imageUrl = supabase.storage
     .from("outfit-images")
     .getPublicUrl(outfit.image_path).data.publicUrl;
 
+  const title = `${outfit.title} — GZM`;
+
   return {
-    title: `${outfit.title} — GZM`,
+    title,
     description: outfit.description,
 
     openGraph: {
-      title: `${outfit.title} — GZM`,
+      title,
       description: outfit.description,
-      url: `https://maldobrands.vercel.app/?outfit=${outfitId}`,
+      url: `/?outfit=${outfitId}`,
       siteName: "GZM",
       type: "website",
       images: [
@@ -72,7 +62,7 @@ export async function generateMetadata({
 
     twitter: {
       card: "summary_large_image",
-      title: `${outfit.title} — GZM`,
+      title,
       description: outfit.description,
       images: [imageUrl],
     },
