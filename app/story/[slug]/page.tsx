@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 import { createClient } from "@/lib/supabase/server";
 import StoryReader, {
@@ -82,6 +83,76 @@ type PageProps = {
     slug: string;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  const supabase = await createClient();
+
+  const { data: story } = await supabase
+    .from("stories")
+    .select("title, description, cover_image")
+    .eq("slug", slug)
+    .eq("status", "published")
+    .single();
+
+  if (!story) {
+    return {
+      title: "Story | GZM",
+    };
+  }
+
+  let coverImageUrl: string | null = null;
+
+  if (story.cover_image) {
+    if (
+      story.cover_image.startsWith("http://") ||
+      story.cover_image.startsWith("https://")
+    ) {
+      coverImageUrl = story.cover_image;
+    } else {
+      coverImageUrl = supabase.storage
+        .from("story-images")
+        .getPublicUrl(story.cover_image).data.publicUrl;
+    }
+  }
+
+  return {
+    title: `${story.title} | GZM`,
+    description: story.description ?? undefined,
+
+    openGraph: {
+      title: story.title,
+      description: story.description ?? undefined,
+      type: "article",
+      ...(coverImageUrl
+        ? {
+            images: [
+              {
+                url: coverImageUrl,
+                width: 1200,
+                height: 630,
+                alt: story.title,
+              },
+            ],
+          }
+        : {}),
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: story.title,
+      description: story.description ?? undefined,
+      ...(coverImageUrl
+        ? {
+            images: [coverImageUrl],
+          }
+        : {}),
+    },
+  };
+}
 
 export default async function StoryPage({ params }: PageProps) {
   const { slug } = await params;
