@@ -114,7 +114,7 @@ export async function generateMetadata({
       coverImageUrl = story.cover_image;
     } else {
       coverImageUrl = supabase.storage
-        .from("story-images")
+        .from("story-hero")
         .getPublicUrl(story.cover_image).data.publicUrl;
     }
   }
