@@ -23,6 +23,14 @@ export type StoryReaderOutfit = {
   items: StoryReaderProduct[];
 };
 
+export type StoryReaderExtraItem = {
+  id: string;
+  name: string;
+  brand: string | null;
+  imageUrl: string | null;
+  itemUrl: string | null;
+};
+
 export type StoryReaderPart = {
   id: string;
   story_id: string;
@@ -32,6 +40,7 @@ export type StoryReaderPart = {
   video_url?: string | null;
 
   outfits?: StoryReaderOutfit[];
+  extraItems?: StoryReaderExtraItem[];
 };
 
 export type StoryReaderStory = {
@@ -454,6 +463,74 @@ export default function StoryReader({ story, parts }: StoryReaderProps) {
                       No looks are associated with this part.
                     </p>
                   )}
+                  {activePart.extraItems &&
+                    activePart.extraItems.length > 0 && (
+                      <div className="mt-7 border-t border-neutral-200 pt-6">
+                        <h4 className="text-[9px] uppercase tracking-[0.28em] text-neutral-800">
+                          Featured item
+                        </h4>
+
+                        <div className="mt-4 space-y-3">
+                          {activePart.extraItems.map((item) => {
+                            const itemContent = (
+                              <>
+                                {item.imageUrl && (
+                                  <div className="h-[72px] w-[60px] shrink-0 overflow-hidden bg-neutral-100">
+                                    <img
+                                      src={item.imageUrl}
+                                      alt={item.name}
+                                      className="h-full w-full object-contain"
+                                    />
+                                  </div>
+                                )}
+
+                                <div className="min-w-0 flex-1">
+                                  <p className="text-sm leading-5 text-neutral-800">
+                                    {item.name}
+                                  </p>
+
+                                  {item.brand && (
+                                    <p className="mt-1 text-[9px] uppercase tracking-[0.12em] text-neutral-400">
+                                      {item.brand}
+                                    </p>
+                                  )}
+                                </div>
+
+                                {item.itemUrl && (
+                                  <span className="flex shrink-0 items-center gap-1 text-[10px] uppercase tracking-[0.12em] text-neutral-500">
+                                    SHOP
+                                    <ExternalLink size={10} strokeWidth={1.3} />
+                                  </span>
+                                )}
+                              </>
+                            );
+
+                            if (!item.itemUrl) {
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="flex items-center gap-4 border-b border-neutral-200 pb-3"
+                                >
+                                  {itemContent}
+                                </div>
+                              );
+                            }
+
+                            return (
+                              <a
+                                key={item.id}
+                                href={item.itemUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-4 border-b border-neutral-200 pb-3 transition-colors hover:bg-neutral-50"
+                              >
+                                {itemContent}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   {/* Affiliate Disclaimer */}
                   <div className="border-t border-neutral-200 pt-5 text-center">
                     <p className="text-[9px] leading-4 text-neutral-400">

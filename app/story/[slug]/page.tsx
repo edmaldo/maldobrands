@@ -6,6 +6,7 @@ import StoryReader, {
   type StoryReaderOutfit,
   type StoryReaderProduct,
   type StoryReaderStory,
+  type StoryReaderExtraItem,
 } from "@/components/story/StoryReader";
 
 type Genre = {
@@ -42,6 +43,18 @@ type StoryPartOutfit = {
   outfit: SupabaseOutfit | SupabaseOutfit[] | null;
 };
 
+type StoryPartItem = {
+  extra_item: SupabaseExtraItem | SupabaseExtraItem[] | null;
+};
+
+type SupabaseExtraItem = {
+  id: string;
+  name: string;
+  brand: string | null;
+  image_url: string | null;
+  item_url: string | null;
+};
+
 type SupabaseStoryPart = {
   id: string;
   story_id: string;
@@ -50,6 +63,7 @@ type SupabaseStoryPart = {
   cover_image: string | null;
   video_url: string | null;
   story_part_outfits: StoryPartOutfit[];
+  story_parts_items: StoryPartItem[];
 };
 
 type SupabaseStory = {
@@ -78,20 +92,6 @@ export default async function StoryPage({ params }: PageProps) {
    * =========================================================
    * LOAD STORY
    * =========================================================
-   *
-   * Story structure:
-   *
-   * stories
-   *   ↓
-   * story_parts
-   *   ↓
-   * story_part_outfits
-   *   ↓
-   * outfits
-   *   ↓
-   * outfit_items
-   *   ↓
-   * products
    */
 
   const { data: storyData, error: storyError } = await supabase
@@ -139,6 +139,16 @@ export default async function StoryPage({ params }: PageProps) {
                 )
               )
             )
+          ),
+
+          story_parts_items (
+            extra_item:extra_items (
+              id,
+              name,
+              brand,
+              image_url,
+              item_url
+            )
           )
         )
       `,
@@ -152,7 +162,7 @@ export default async function StoryPage({ params }: PageProps) {
     notFound();
   }
 
-  const story = storyData as SupabaseStory;
+  const story = storyData as unknown as SupabaseStory;
 
   /*
    * =========================================================
@@ -188,6 +198,42 @@ export default async function StoryPage({ params }: PageProps) {
           .getPublicUrl(part.cover_image).data.publicUrl;
       }
     }
+
+    const extraItems: StoryReaderExtraItem[] =
+      part.story_parts_items
+        ?.map((relationship) => {
+          const rawItem = relationship.extra_item;
+
+          if (!rawItem) return null;
+
+          const item = Array.isArray(rawItem) ? rawItem[0] : rawItem;
+
+          if (!item) return null;
+
+          let extraItemImage: string | null = null;
+
+          if (item.image_url) {
+            if (
+              item.image_url.startsWith("http://") ||
+              item.image_url.startsWith("https://")
+            ) {
+              extraItemImage = item.image_url;
+            } else {
+              extraItemImage = supabase.storage
+                .from("extra-item-image")
+                .getPublicUrl(item.image_url).data.publicUrl;
+            }
+          }
+
+          return {
+            id: item.id,
+            name: item.name,
+            brand: item.brand,
+            imageUrl: extraItemImage,
+            itemUrl: item.item_url,
+          };
+        })
+        .filter((item): item is StoryReaderExtraItem => item !== null) ?? [];
 
     /*
      * Resolve outfits associated with this part.
@@ -263,6 +309,7 @@ export default async function StoryPage({ params }: PageProps) {
       cover_image: coverImage,
       video_url: part.video_url,
       outfits,
+      extraItems,
     };
   });
 
