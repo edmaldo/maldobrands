@@ -44,7 +44,7 @@ export type StoryReaderMobilePart = {
   cover_image: string | null;
   video_url?: string | null;
   outfits?: StoryReaderMobileOutfit[];
-  extra_items?: StoryReaderMobileExtraItem[];
+  extraItems?: StoryReaderMobileExtraItem[];
 };
 
 export type StoryReaderMobileStory = {
