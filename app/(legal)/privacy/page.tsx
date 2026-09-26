@@ -8,7 +8,7 @@ export default function PrivacyPage() {
       <main>
         {/* Page Header */}
         <section className="border-b border-neutral-200">
-          <div className="mx-auto max-w-4xl px-6 py-12 text-center md:py-16">
+          <div className="mx-auto max-w-4xl px-6 py-10 text-center md:py-10">
             <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-neutral-400">
               Legal
             </p>
