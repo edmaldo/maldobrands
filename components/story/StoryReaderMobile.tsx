@@ -394,24 +394,22 @@ export default function StoryReaderMobile({
                         {[...outfit.items]
                           .sort((a, b) => a.position - b.position)
                           .map((item) => (
-                            <div
+                            <a
                               key={item.id}
-                              className="flex items-center justify-between gap-3 border-b border-neutral-200 py-3 last:border-b-0"
+                              href={item.productUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group flex items-center justify-between gap-3 border-b border-neutral-200 py-3 last:border-b-0"
                             >
                               <span className="min-w-0 text-xs leading-4 text-neutral-600">
                                 {item.name}
                               </span>
 
-                              <a
-                                href={item.productUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex shrink-0 items-center gap-1 text-[9px] uppercase tracking-[0.12em] text-neutral-500 transition hover:text-neutral-900"
-                              >
+                              <span className="flex shrink-0 items-center gap-1 text-[9px] uppercase tracking-[-0.12em] text-neutral-500 transition group-hover:text-neutral-900">
                                 Shop
                                 <ExternalLink size={10} strokeWidth={1.3} />
-                              </a>
-                            </div>
+                              </span>
+                            </a>
                           ))}
                       </div>
                     </div>
@@ -437,7 +435,7 @@ export default function StoryReaderMobile({
                   const itemContent = (
                     <>
                       {item.imageUrl && (
-                        <div className="h-[72px] w-[60px] shrink-0 overflow-hidden bg-neutral-100">
+                        <div className="h-[72px] w-[112px] shrink-0 overflow-hidden bg-neutral-100">
                           <img
                             src={item.imageUrl}
                             alt={item.name}
