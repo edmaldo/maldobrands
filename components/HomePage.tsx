@@ -214,7 +214,7 @@ export default function HomePage() {
           {/* Hero Image */}
           <div className="order-1 relative h-[72vh] min-h-[420px] max-h-[680px] bg-neutral-200 lg:order-2 lg:h-auto lg:min-h-0 lg:max-h-none">
             <img
-              src="/images/gzm-hero.png"
+              src="/images/hero-urban.png"
               alt="GZM fashion editorial"
               className="h-full w-full object-cover"
             />
