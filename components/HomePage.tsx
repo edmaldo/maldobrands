@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { BookOpen, Shirt, ShoppingBag } from "lucide-react";
 
 import Header from "@/components/layout/Header";
 import StoryFeatureCard, {
@@ -185,20 +186,15 @@ export default function HomePage() {
           {/* Hero Copy */}
           <div className="order-2 flex flex-col items-center justify-center px-6 py-12 text-center sm:px-10 lg:order-1 lg:items-start lg:px-16 lg:py-10 lg:text-left xl:px-20">
             <h1 className="font-editorial max-w-xl text-5xl font-normal leading-[0.9] tracking-[-0.045em] text-neutral-900 sm:text-6xl lg:text-[6.2rem]">
-              Fashion
-              <br />
-              lives in
-              <br />
-              stories.
+              Style Tells
+              <br />A Story
             </h1>
 
             <div className="mt-6 max-w-md">
               <p className="text-lg font-normal leading-7 text-neutral-700 sm:text-xl">
-                Contemporary looks.
+                Real styles found in
                 <br />
-                Imagined worlds.
-                <br />
-                Real style.
+                imagined worlds.
               </p>
             </div>
 
@@ -224,8 +220,8 @@ export default function HomePage() {
               <div className="flex flex-col gap-3 text-[9px] uppercase tracking-[0.35em] text-white drop-shadow-md">
                 <span>Characters</span>
                 <span>Outfits</span>
-                <span>Ideas</span>
-                <span>A more stylish</span>
+                <span>Moments</span>
+                <span>A stylish</span>
                 <span>point of view</span>
               </div>
             </div>
@@ -258,14 +254,16 @@ export default function HomePage() {
               </span>
 
               <h3 className="font-editorial mt-4 text-2xl font-normal uppercase tracking-[0.08em]">
-                Read the Story
+                Browse Stories
               </h3>
 
               <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-500">
-                Step into new worlds through original stories and characters.
+                View original stories with fashionable characters.
               </p>
 
-              <div className="mt-7 text-3xl font-light text-neutral-500">♧</div>
+              <div className="mt-7 flex justify-center text-neutral-500">
+                <BookOpen size={24} strokeWidth={1.2} />
+              </div>
             </div>
 
             {/* Step 2 */}
@@ -275,14 +273,16 @@ export default function HomePage() {
               </span>
 
               <h3 className="font-editorial mt-4 text-2xl font-normal uppercase tracking-[0.08em]">
-                Discover the Looks
+                Discover Looks
               </h3>
 
               <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-500">
-                Explore the outfits from each story, curated in detail.
+                Explore the outfits in each chapter.
               </p>
 
-              <div className="mt-7 text-3xl font-light text-neutral-500">♧</div>
+              <div className="mt-7 flex justify-center text-neutral-500">
+                <Shirt size={24} strokeWidth={1.2} />
+              </div>
             </div>
 
             {/* Step 3 */}
@@ -296,10 +296,12 @@ export default function HomePage() {
               </h3>
 
               <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-500">
-                Shop the styles through our curated vendor links.
+                Shop curated products through our vendor links.
               </p>
 
-              <div className="mt-7 text-3xl font-light text-neutral-500">♧</div>
+              <div className="mt-7 flex justify-center text-neutral-500">
+                <ShoppingBag size={24} strokeWidth={1.2} />
+              </div>
             </div>
           </div>
         </div>
@@ -423,14 +425,14 @@ export default function HomePage() {
               <h2 className="font-editorialmt-6 text-5xl font-normal leading-[0.95] tracking-[-0.04em] text-neutral-900 sm:text-6xl">
                 A world of
                 <br />
-                style and ideas.
+                style and stories.
               </h2>
 
               <div className="mt-7 h-px w-12 bg-neutral-700" />
 
               <p className="font-editorial mt-7 max-w-md text-lg leading-7 text-neutral-700">
-                GZM blends fashion, storytelling, and culture for a more
-                inspired way to see style.
+                GZM blends storytelling and fashion into a new way to discover
+                style.
               </p>
 
               <Link

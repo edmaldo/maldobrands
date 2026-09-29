@@ -14,7 +14,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-neutral-500">
-              A story-based fashion discovery platform.
+              A visual story-based fashion discovery platform.
             </p>
           </div>
         </section>
@@ -35,6 +35,13 @@ export default function AboutPage() {
                   lives. Ultimately, their stories resolve in a fond memory or a
                   sense of triumph.
                 </p>
+
+                <a
+                  href="/stories"
+                  className="mt-5 inline-block underline hover:text-gray-700"
+                >
+                  explore stories →
+                </a>
 
                 <p className="mt-5">
                   GZM includes brands and items from various categories of
@@ -58,6 +65,13 @@ export default function AboutPage() {
                   particular piece, GZM connects you directly to the third-party
                   retailer that sells it.
                 </p>
+
+                <a
+                  href="/outfits"
+                  className="mt-5 inline-block underline hover:text-gray-700"
+                >
+                  explore outfits →
+                </a>
 
                 <p className="mt-5">
                   The result is a way of exploring fashion through contempoary

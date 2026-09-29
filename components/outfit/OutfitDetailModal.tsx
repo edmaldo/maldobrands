@@ -223,7 +223,7 @@ export default function OutfitDetailModal({
                 href={item.productUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between gap-4 border-b border-neutral-300 py-4 text-neutral-500 transition hover:text-black"
+                className="flex items-center justify-between gap-4 border-b border-neutral-300 py-4 text-neutral-500 transition duration-200 hover:translate-x-1 hover:text-neutral-700"
               >
                 {/* PRODUCT NAME */}
                 <div className="min-w-0">
