@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { X } from "lucide-react";
+import { X, ExternalLink } from "lucide-react";
 import ShareButton from "./ShareButton";
 
 export type OutfitProduct = {
@@ -218,18 +218,12 @@ export default function OutfitDetailModal({
           ========================== */}
           <div className="mt-6 sm:mt-6">
             {sortedItems.map((item) => (
-              <div
+              <a
                 key={item.id}
-                className="
-                  flex
-                  items-center
-                  justify-between
-                  gap-4
-                  border-b
-                  border-neutral-300
-                  py-4
-                  text-neutral-500
-                "
+                href={item.productUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-4 border-b border-neutral-300 py-4 text-neutral-500 transition hover:text-black"
               >
                 {/* PRODUCT NAME */}
                 <div className="min-w-0">
@@ -237,22 +231,11 @@ export default function OutfitDetailModal({
                 </div>
 
                 {/* SHOP LINK */}
-                <a
-                  href={item.productUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    shrink-0
-                    text-sm
-                    underline
-                    underline-offset-4
-                    transition
-                    hover:text-black
-                  "
-                >
-                  Shop →
-                </a>
-              </div>
+                <span className="flex shrink-0 items-center gap-1 text-[10px] uppercase tracking-[0.12em] transition-colors">
+                  SHOP
+                  <ExternalLink size={10} strokeWidth={1.3} />
+                </span>
+              </a>
             ))}
           </div>
         </div>

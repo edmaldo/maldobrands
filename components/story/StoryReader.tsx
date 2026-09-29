@@ -475,7 +475,7 @@ export default function StoryReader({ story, parts }: StoryReaderProps) {
                             const itemContent = (
                               <>
                                 {item.imageUrl && (
-                                  <div className="h-[72px] w-[60px] shrink-0 overflow-hidden bg-neutral-100">
+                                  <div className="h-[72px] w-[112px] shrink-0 overflow-hidden bg-neutral-100">
                                     <img
                                       src={item.imageUrl}
                                       alt={item.name}

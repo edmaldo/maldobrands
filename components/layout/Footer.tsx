@@ -44,11 +44,6 @@ export default function Footer() {
           </a>
         </nav>
 
-        <p className="mt-4 max-w-xl text-center text-[10px] leading-relaxed text-neutral-400">
-          GZM may earn a commission from qualifying purchases made through
-          select links.
-        </p>
-
         <p className="mt-4 text-[10px] text-neutral-400">
           © {new Date().getFullYear()} GZM Fashion. All rights reserved.
         </p>
