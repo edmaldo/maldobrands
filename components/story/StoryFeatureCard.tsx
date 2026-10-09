@@ -80,7 +80,7 @@ export default function StoryFeatureCard({ story }: StoryFeatureCardProps) {
           </div>
         )}
 
-        <h2 className="text-2xl font-light tracking-tight text-neutral-900 transition group-hover:text-neutral-500 sm:text-3xl">
+        <h2 className="text-2xl font-light tracking-[0.08em] uppercase text-neutral-900 transition group-hover:text-neutral-500 sm:text-3xl">
           {story.title}
         </h2>
 

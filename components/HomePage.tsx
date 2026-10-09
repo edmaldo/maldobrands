@@ -257,7 +257,7 @@ export default function HomePage() {
                 Browse Stories
               </h3>
 
-              <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-500">
+              <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-600">
                 View original stories with fashionable characters.
               </p>
 
@@ -276,7 +276,7 @@ export default function HomePage() {
                 Discover Looks
               </h3>
 
-              <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-500">
+              <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-600">
                 Explore the outfits in each chapter.
               </p>
 
@@ -295,7 +295,7 @@ export default function HomePage() {
                 Shop the Pieces
               </h3>
 
-              <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-500">
+              <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-6 text-neutral-600">
                 Shop curated products through our vendor links.
               </p>
 
@@ -425,7 +425,9 @@ export default function HomePage() {
               <h2 className="font-editorialmt-6 text-5xl font-normal leading-[0.95] tracking-[-0.04em] text-neutral-900 sm:text-6xl">
                 A world of
                 <br />
-                style and stories.
+                characters
+                <br />
+                and stories.
               </h2>
 
               <div className="mt-7 h-px w-12 bg-neutral-700" />
@@ -448,7 +450,7 @@ export default function HomePage() {
           {/* Statement Image */}
           <div className="relative min-h-[420px] bg-neutral-200">
             <img
-              src="/images/gzm-world.png"
+              src="/images/gzm-black.png"
               alt="GZM fashion world"
               className="h-full w-full object-cover"
             />
